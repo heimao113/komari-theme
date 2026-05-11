@@ -37,6 +37,8 @@ const SVG_HEIGHT = 560;
 const MAP_HORIZONTAL_PADDING = 28;
 const MAP_TOP_PADDING = 42;
 const MAP_BOTTOM_INSET = 42;
+const SMALL_REGION_MARKER_AREA_THRESHOLD = 14;
+const SMALL_REGION_MARKER_SIZE_THRESHOLD = 7;
 const HOVER_CARD_GAP = 12;
 const HOVER_CARD_MAX_WIDTH = 320;
 const HOVER_CARD_FALLBACK_HEIGHT = 124;
@@ -149,7 +151,7 @@ export function NodeMapView({
     };
   }, [activeRegionsByMapName]);
 
-  const getHoverPosition = useCallback((event: PointerEvent<SVGPathElement>) => {
+  const getHoverPosition = useCallback((event: PointerEvent<SVGElement>) => {
     const surfaceRect = mapSurfaceRef.current?.getBoundingClientRect();
     const boundsWidth = surfaceRect?.width ?? window.innerWidth;
     const boundsHeight = surfaceRect?.height ?? window.innerHeight;
