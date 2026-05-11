@@ -17,6 +17,7 @@ const regionMetaOverridesByFlagCode: Record<
   Partial<Pick<RegionMeta, "label" | "mapName">>
 > = {
   US: { label: "United States", mapName: "United States of America" },
+  TR: { label: "Turkey", mapName: "Turkey" },
   MO: { label: "Macau", mapName: "Macao" },
   HK: { label: "Hong Kong", mapName: "Hong Kong" },
 };

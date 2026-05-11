@@ -115,11 +115,29 @@ export function NodeMapView({
         const name = country.properties?.name ?? String(country.id ?? "unknown");
         const pathData = pathGenerator(country as never) ?? "";
         const activeRegion = activeRegionsByMapName.get(name) ?? null;
+        const bounds = pathGenerator.bounds(country as never);
+        const width = bounds[1][0] - bounds[0][0];
+        const height = bounds[1][1] - bounds[0][1];
+        const area = pathGenerator.area(country as never);
+        const [markerX, markerY] = pathGenerator.centroid(country as never);
+        const shouldShowMarker =
+          Boolean(activeRegion) &&
+          Number.isFinite(markerX) &&
+          Number.isFinite(markerY) &&
+          (area < SMALL_REGION_MARKER_AREA_THRESHOLD ||
+            Math.max(width, height) < SMALL_REGION_MARKER_SIZE_THRESHOLD);
 
         return {
           name,
           pathData,
           activeRegion,
+          marker:
+            shouldShowMarker
+              ? {
+                  x: markerX,
+                  y: markerY,
+                }
+              : null,
         };
       })
       .filter((country) => country.pathData);
@@ -188,7 +206,7 @@ export function NodeMapView({
   );
 
   const updateHoveredRegion = useCallback(
-    (event: PointerEvent<SVGPathElement>, region: MapRegionSummary) => {
+    (event: PointerEvent<SVGElement>, region: MapRegionSummary) => {
       const position = getHoverPosition(event);
 
       setHoveredRegion({
@@ -201,7 +219,7 @@ export function NodeMapView({
   );
 
   const updateHoverPosition = useCallback(
-    (event: PointerEvent<SVGPathElement>) => {
+    (event: PointerEvent<SVGElement>) => {
       queueHoverPosition(getHoverPosition(event));
     },
     [getHoverPosition, queueHoverPosition],
@@ -344,6 +362,54 @@ export function NodeMapView({
                     </g>
                   );
                 })}
+              </g>
+
+              <g className="node-map-view__marker-layer">
+                {projectedMap.countries
+                  .filter((country) => country.activeRegion && country.marker)
+                  .map((country) => {
+                    const region = country.activeRegion;
+                    const marker = country.marker;
+                    if (!region || !marker) {
+                      return null;
+                    }
+
+                    const isSelected = hoveredRegion?.regionKey === region.key;
+                    const ariaLabel = t("mapView.countrySummary", {
+                      name: region.label,
+                      total: region.total,
+                      online: region.online,
+                      offline: region.offline,
+                      defaultValue:
+                        "{{name}}: {{total}} nodes, {{online}} online, {{offline}} offline",
+                    });
+
+                    return (
+                      <g
+                        key={`${country.name}-marker`}
+                        className={`node-map-view__marker status-${region.status}${isSelected ? " is-selected" : ""}`}
+                        data-country-code={region.flagCode}
+                        data-country-name={country.name}
+                        aria-label={ariaLabel}
+                        onPointerEnter={(event) => updateHoveredRegion(event, region)}
+                        onPointerMove={updateHoverPosition}
+                        onPointerLeave={clearHoveredRegion}
+                      >
+                        <circle
+                          cx={marker.x}
+                          cy={marker.y}
+                          r="9"
+                          className="node-map-view__marker-halo"
+                        />
+                        <circle
+                          cx={marker.x}
+                          cy={marker.y}
+                          r="4.2"
+                          className="node-map-view__marker-dot"
+                        />
+                      </g>
+                    );
+                  })}
               </g>
             </svg>
 
