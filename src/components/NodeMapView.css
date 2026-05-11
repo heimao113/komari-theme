@@ -100,6 +100,60 @@
   stroke-width: 1.6;
 }
 
+.node-map-view__marker {
+  cursor: pointer;
+}
+
+.node-map-view__marker-halo,
+.node-map-view__marker-dot {
+  vector-effect: non-scaling-stroke;
+  transition:
+    opacity 180ms ease,
+    r 180ms ease,
+    stroke-width 180ms ease;
+}
+
+.node-map-view__marker-halo {
+  fill: rgba(255, 255, 255, 0.72);
+  stroke-width: 1.4;
+}
+
+.node-map-view__marker-dot {
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 1.2;
+}
+
+.node-map-view__marker.status-online .node-map-view__marker-halo {
+  stroke: rgba(5, 150, 105, 0.72);
+}
+
+.node-map-view__marker.status-online .node-map-view__marker-dot {
+  fill: rgb(16, 185, 129);
+}
+
+.node-map-view__marker.status-partial .node-map-view__marker-halo {
+  stroke: rgba(217, 119, 6, 0.72);
+}
+
+.node-map-view__marker.status-partial .node-map-view__marker-dot {
+  fill: rgb(245, 158, 11);
+}
+
+.node-map-view__marker.status-offline .node-map-view__marker-halo {
+  stroke: rgba(225, 29, 72, 0.7);
+}
+
+.node-map-view__marker.status-offline .node-map-view__marker-dot {
+  fill: rgb(244, 63, 94);
+}
+
+.node-map-view__marker:hover .node-map-view__marker-halo,
+.node-map-view__marker.is-selected .node-map-view__marker-halo {
+  opacity: 0.88;
+  r: 10.5;
+  stroke-width: 2;
+}
+
 .node-map-view__legend {
   grid-area: 1 / 1;
   display: flex;
