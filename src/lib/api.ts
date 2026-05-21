@@ -19,6 +19,23 @@ export interface SettingsResponse {
   [key: string]: any;
 }
 
+function normalizeSiteDescription(description: string): string {
+  return description.replace(/[\r\n]+/g, " ").replace(/\s+/g, " ").trim();
+}
+
+function normalizeSettingsPayload(
+  settings: Partial<SettingsResponse>
+): Partial<SettingsResponse> {
+  if (typeof settings.description !== "string") {
+    return settings;
+  }
+
+  return {
+    ...settings,
+    description: normalizeSiteDescription(settings.description),
+  };
+}
+
 /**
  * Fetch settings from the API
  * @returns Promise containing the settings data
@@ -36,7 +53,7 @@ export async function getSettings(): Promise<SettingsResponse> {
     // Remove database metadata fields that are not needed for UI
     const { CreatedAt, UpdatedAt, id, ...settings } = data["data"];
 
-    return settings as SettingsResponse;
+    return normalizeSettingsPayload(settings) as SettingsResponse;
   } catch (error) {
     console.error("Failed to fetch settings:", error);
     throw error;
@@ -52,12 +69,13 @@ export async function updateSettings(
   settings: Partial<SettingsResponse>
 ): Promise<void> {
   try {
+    const normalizedSettings = normalizeSettingsPayload(settings);
     const response = await fetch("/api/admin/settings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(settings),
+      body: JSON.stringify(normalizedSettings),
     });
 
     if (!response.ok) {
@@ -100,7 +118,10 @@ export async function updateSingleSetting<K extends keyof SettingsResponse>(
   value: SettingsResponse[K],
   currentSettings: SettingsResponse
 ): Promise<void> {
-  const updatedSettings = { ...currentSettings, [key]: value };
+  const updatedSettings = normalizeSettingsPayload({
+    ...currentSettings,
+    [key]: value,
+  });
   return updateSettings(updatedSettings);
 }
 
@@ -150,8 +171,13 @@ export function useSettings() {
     value: SettingsResponse[K]
   ) => {
     try {
-      await updateSingleSetting(key, value, settings);
-      setSettings((prev) => ({ ...prev, [key]: value }));
+      const normalizedValue =
+        key === "description" && typeof value === "string"
+          ? (normalizeSiteDescription(value) as SettingsResponse[K])
+          : value;
+
+      await updateSingleSetting(key, normalizedValue, settings);
+      setSettings((prev) => ({ ...prev, [key]: normalizedValue }));
     } catch (err) {
       setError(
         err instanceof Error ? err.message : `Failed to update ${String(key)}`
@@ -165,7 +191,10 @@ export function useSettings() {
     newSettings: Partial<SettingsResponse>
   ) => {
     try {
-      const updatedSettings = { ...settings, ...newSettings };
+      const updatedSettings = normalizeSettingsPayload({
+        ...settings,
+        ...newSettings,
+      }) as SettingsResponse;
       await updateSettings(updatedSettings);
       setSettings(updatedSettings);
     } catch (err) {
