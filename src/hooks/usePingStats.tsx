@@ -80,7 +80,7 @@ export function usePingStats(uuid: string, hours: number = 24): PingStats {
 
     let active = true;
 
-    (async () => {
+    const fetchStats = async () => {
       try {
         const result = await fetchPingRecords(call, uuid, hours);
         if (!active) return;
@@ -125,7 +125,9 @@ export function usePingStats(uuid: string, hours: number = 24): PingStats {
         if (!active) return;
         setStats(createEmptyStats());
       }
-    })();
+    };
+
+    void fetchStats();
 
     return () => {
       active = false;

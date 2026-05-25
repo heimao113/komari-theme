@@ -141,6 +141,7 @@ const PingChart = ({ uuid }: { uuid: string }) => {
         if (!active) return;
         setRemoteData(result.records);
         setTasks(result?.tasks || []);
+        setError(null);
         setLoading(false);
       } catch (err: any) {
         if (!active) return;

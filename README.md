@@ -5,7 +5,7 @@ It is built with **Next.js**, **TypeScript**, **Tailwind CSS** and **Shadcn UI**
 
 [中文](https://github.com/tonyliuzj/komari-next/blob/main/README-CN.md)
 
-[Demo](https://probes.top)
+[Demo](https://komari.probe.name)
 
 [Download theme file](https://github.com/tonyliuzj/komari-next/releases/latest/download/dist-release.zip)
 
@@ -164,6 +164,7 @@ If you find issues or have ideas for improvements, feel free to open an issue or
 ## Thanks
 [piphase/komari-nexus](https://github.com/piphase/komari-nexus)
 [fanchengliu/komari-next-pro](https://github.com/fanchengliu/komari-next-pro)
+[Contributors](https://github.com/tonyliuzj/komari-next/graphs/contributors)
 
 ## Star History
 
