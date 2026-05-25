@@ -1,29 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useRPC2Call } from '@/contexts/RPC2Context';
-
-interface PingRecord {
-  client: string;
-  task_id: number;
-  time: string;
-  value: number;
-}
-
-interface TaskInfo {
-  id: number;
-  name: string;
-  interval: number;
-  loss: number;
-  value?: number;
-  p99?: number;
-  p50?: number;
-  p99_p50_ratio?: number;
-  min?: number;
-  max?: number;
-  avg?: number;
-  latest?: number;
-  total?: number;
-  type?: string;
-}
+import { fetchPingRecords, type PingRecord } from '@/lib/pingRecords';
 
 export interface PingHistoryPoint {
   time: string;
@@ -96,25 +73,17 @@ export function usePingStats(uuid: string, hours: number = 24): PingStats {
   const [stats, setStats] = useState<PingStats>(() => createEmptyStats());
 
   useEffect(() => {
-    if (!uuid) return;
+    if (!uuid.trim()) {
+      setStats(createEmptyStats());
+      return;
+    }
 
-    const controller = new AbortController();
+    let active = true;
 
     (async () => {
       try {
-        type RpcResp = {
-          count: number;
-          records: PingRecord[];
-          tasks?: TaskInfo[];
-          from?: string;
-          to?: string;
-        };
-
-        const result = await call<any, RpcResp>('common:getRecords', {
-          uuid,
-          type: 'ping',
-          hours,
-        });
+        const result = await fetchPingRecords(call, uuid, hours);
+        if (!active) return;
 
         const records = result?.records || [];
         const tasks = result?.tasks || [];
@@ -152,12 +121,15 @@ export function usePingStats(uuid: string, hours: number = 24): PingStats {
           history,
           hasData: true,
         });
-      } catch (err) {
+      } catch {
+        if (!active) return;
         setStats(createEmptyStats());
       }
     })();
 
-    return () => controller.abort();
+    return () => {
+      active = false;
+    };
   }, [uuid, hours, call]);
 
   return stats;
