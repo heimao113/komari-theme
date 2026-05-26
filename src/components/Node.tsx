@@ -269,10 +269,10 @@ const Node = ({ basic, live, online, pingStatsEnabled = false }: NodeProps) => {
 
   // Layout-specific styles
   const cardStyles = {
-    classic: "w-full transition-all duration-200 hover:shadow-lg hover:border-primary/50 overflow-hidden group border",
-    modern: "w-full transition-all duration-200 hover:shadow-lg overflow-hidden group border-none bg-gradient-to-br from-card to-card/50 shadow-sm",
-    minimal: "w-full transition-all duration-200 hover:shadow-md overflow-hidden group bg-gradient-to-br from-muted/40 to-muted/20 rounded-xl border border-border/50",
-    detailed: "w-full transition-all duration-200 hover:shadow-xl overflow-hidden group border-2 shadow-md hover:border-primary/30",
+    classic: "flex h-full w-full flex-col transition-all duration-200 hover:shadow-lg hover:border-primary/50 overflow-hidden group border",
+    modern: "flex h-full w-full flex-col transition-all duration-200 hover:shadow-lg overflow-hidden group border-none bg-gradient-to-br from-card to-card/50 shadow-sm",
+    minimal: "flex h-full w-full flex-col transition-all duration-200 hover:shadow-md overflow-hidden group bg-gradient-to-br from-muted/40 to-muted/20 rounded-xl border border-border/50",
+    detailed: "flex h-full w-full flex-col transition-all duration-200 hover:shadow-xl overflow-hidden group border-2 shadow-md hover:border-primary/30",
   };
 
   const headerStyles = {
@@ -283,10 +283,10 @@ const Node = ({ basic, live, online, pingStatsEnabled = false }: NodeProps) => {
   };
 
   const contentStyles = {
-    classic: "p-4 pt-4",
-    modern: "p-4 pt-4 bg-gradient-to-b from-background/50 to-transparent",
-    minimal: "p-4 pt-3",
-    detailed: "p-5 pt-4 bg-gradient-to-b from-background to-muted/10",
+    classic: "flex-1 p-4 pt-4",
+    modern: "flex-1 p-4 pt-4 bg-gradient-to-b from-background/50 to-transparent",
+    minimal: "flex-1 p-4 pt-3",
+    detailed: "flex-1 p-5 pt-4 bg-gradient-to-b from-background to-muted/10",
   };
 
   const footerStyles = {
@@ -664,7 +664,7 @@ export const NodeGrid = ({ nodes, liveData }: NodeGridProps) => {
             key={node.uuid}
             data-node-grid-item="true"
             data-row-index={rowIndex}
-            className="min-w-0"
+            className="flex min-w-0"
           >
             <Node
               basic={node}
