@@ -898,7 +898,9 @@
         "label": "速度仪表"
       }
     },
-    "themeSettings": "主题设置"
+    "themeSettings": "主题设置",
+    "backgroundMaskOpacity": "蒙版不透明度",
+    "backgroundMaskOpacityHint": "在背景图片上叠加白色（浅色模式）或黑色（深色模式）蒙版，数值越高文字越清晰可读。"
   },
   "time": {
     "ago": "前",

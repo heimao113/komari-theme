@@ -743,7 +743,9 @@
         "label": "Minimal",
         "description": "Simple text"
       }
-    }
+    },
+    "backgroundMaskOpacity": "Mask Opacity",
+    "backgroundMaskOpacityHint": "Overlays white (light mode) or black (dark mode) on the background image to improve text readability."
   },
   "terminal": {
     "disconnect": "Disconnected",

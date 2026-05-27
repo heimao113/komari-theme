@@ -34,6 +34,7 @@ export interface ThemeConfig {
   backgroundBlurEnabled: boolean;
   backgroundBlurType: BackgroundBlurType;
   backgroundBlurIntensity: number;
+  backgroundMaskOpacity: number;
   cardBlurEnabled: boolean;
   cardBlurType: CardBlurType;
   // Persisted key kept for compatibility; this now drives card transparency.
@@ -74,6 +75,7 @@ interface ThemeContextType {
   setBackgroundBlurEnabled: (enabled: boolean) => void;
   setBackgroundBlurType: (type: BackgroundBlurType) => void;
   setBackgroundBlurIntensity: (intensity: number) => void;
+  setBackgroundMaskOpacity: (opacity: number) => void;
   setCardBlurEnabled: (enabled: boolean) => void;
   setCardBlurType: (type: CardBlurType) => void;
   setCardTransparentIntensity: (intensity: number) => void;
@@ -140,6 +142,7 @@ const DEFAULT_THEME_CONFIG: ThemeConfig = {
   backgroundBlurEnabled: false,
   backgroundBlurType: "soft",
   backgroundBlurIntensity: 35,
+  backgroundMaskOpacity: 0,
   cardBlurEnabled: false,
   cardBlurType: "glass",
   cardBlurIntensity: 35,
@@ -471,6 +474,7 @@ function normalizeThemeConfigOverrides(input: unknown): Partial<ThemeConfig> {
   const backgroundBlurEnabled = pickBoolean(input.backgroundBlurEnabled);
   const backgroundBlurType = pickBlurType(input.backgroundBlurType);
   const backgroundBlurIntensity = pickNumber(input.backgroundBlurIntensity);
+  const backgroundMaskOpacity = pickNumber(input.backgroundMaskOpacity);
   const cardBlurEnabled = pickBoolean(input.cardBlurEnabled);
   const cardBlurType = pickBlurType(input.cardBlurType);
   const cardBlurIntensity = pickNumber(input.cardBlurIntensity);
@@ -486,6 +490,9 @@ function normalizeThemeConfigOverrides(input: unknown): Partial<ThemeConfig> {
   if (backgroundBlurType) result.backgroundBlurType = backgroundBlurType;
   if (backgroundBlurIntensity !== undefined) {
     result.backgroundBlurIntensity = clampBackgroundBlurIntensity(backgroundBlurIntensity);
+  }
+  if (backgroundMaskOpacity !== undefined) {
+    result.backgroundMaskOpacity = clampBackgroundBlurIntensity(backgroundMaskOpacity);
   }
   if (cardBlurEnabled !== undefined) result.cardBlurEnabled = cardBlurEnabled;
   if (cardBlurType) result.cardBlurType = cardBlurType;
@@ -636,6 +643,7 @@ function mergeManagedSettings(
       "backgroundBlurEnabled",
       "backgroundBlurType",
       "backgroundBlurIntensity",
+      "backgroundMaskOpacity",
       "cardBlurEnabled",
       "cardBlurType",
       "cardBlurIntensity",
@@ -1037,6 +1045,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       document.body.style.removeProperty("--komari-custom-background-inset");
       document.body.style.removeProperty("--komari-custom-background-bleed");
       document.body.style.removeProperty("--komari-custom-background-scale");
+      document.body.style.removeProperty("--komari-custom-background-mask-opacity");
       return;
     }
 
@@ -1053,6 +1062,10 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     );
     document.body.style.setProperty("--komari-custom-background-filter", filter);
     document.body.style.setProperty("--komari-custom-background-bleed", bleed);
+    document.body.style.setProperty(
+      "--komari-custom-background-mask-opacity",
+      cssAlpha(themeConfig.backgroundMaskOpacity / 100)
+    );
     document.body.style.removeProperty("--komari-custom-background-inset");
     document.body.style.removeProperty("--komari-custom-background-scale");
   }, [
@@ -1060,6 +1073,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     themeConfig.backgroundBlurIntensity,
     themeConfig.backgroundBlurType,
     themeConfig.backgroundImageUrl,
+    themeConfig.backgroundMaskOpacity,
   ]);
 
   useEffect(() => {
@@ -1135,6 +1149,11 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       setLocalThemePatch({ backgroundBlurIntensity: clampBackgroundBlurIntensity(intensity) }),
     [setLocalThemePatch]
   );
+  const setBackgroundMaskOpacity = useCallback(
+    (opacity: number) =>
+      setLocalThemePatch({ backgroundMaskOpacity: clampBackgroundBlurIntensity(opacity) }),
+    [setLocalThemePatch]
+  );
   const setCardBlurEnabled = useCallback(
     (enabled: boolean) => setLocalThemePatch({ cardBlurEnabled: enabled }),
     [setLocalThemePatch]
@@ -1178,6 +1197,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       setBackgroundBlurEnabled,
       setBackgroundBlurType,
       setBackgroundBlurIntensity,
+      setBackgroundMaskOpacity,
       setCardBlurEnabled,
       setCardBlurType,
       setCardTransparentIntensity,
@@ -1198,6 +1218,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       setBackgroundBlurIntensity,
       setBackgroundBlurType,
       setBackgroundImageUrl,
+      setBackgroundMaskOpacity,
       setAppearanceValue,
       setCardBlurEnabled,
       setCardBlurIntensity,

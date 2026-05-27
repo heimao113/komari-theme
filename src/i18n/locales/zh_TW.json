@@ -743,7 +743,9 @@
         "label": "極簡",
         "description": "簡單文本"
       }
-    }
+    },
+    "backgroundMaskOpacity": "蒙版不透明度",
+    "backgroundMaskOpacityHint": "在背景圖片上疊加白色（淺色模式）或黑色（深色模式）蒙版，數值越高文字越清晰易讀。"
   },
   "terminal": {
     "disconnect": "連接已斷開",

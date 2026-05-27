@@ -40,6 +40,7 @@ const ThemeSwitcher = () => {
     setBackgroundBlurEnabled,
     setBackgroundBlurType,
     setBackgroundBlurIntensity,
+    setBackgroundMaskOpacity,
     setCardBlurEnabled,
     setCardBlurType,
     setCardTransparentIntensity,
@@ -541,6 +542,32 @@ const ThemeSwitcher = () => {
                       onChange={(event) => setBackgroundBlurIntensity(Number(event.target.value))}
                       className="h-2 w-full cursor-pointer accent-primary"
                     />
+                  </div>
+                </div>
+              )}
+              {themeConfig.backgroundImageUrl && (
+                <div className="space-y-3">
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-muted-foreground">
+                        {t('themeCustomizer.backgroundMaskOpacity', { defaultValue: 'Mask Opacity' })}
+                      </span>
+                      <span className="text-sm font-medium tabular-nums">
+                        {themeConfig.backgroundMaskOpacity}%
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      step={5}
+                      value={themeConfig.backgroundMaskOpacity}
+                      onChange={(event) => setBackgroundMaskOpacity(Number(event.target.value))}
+                      className="h-2 w-full cursor-pointer accent-primary"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      {t('themeCustomizer.backgroundMaskOpacityHint', { defaultValue: 'Overlays white (light) or black (dark) on the background image to improve text readability.' })}
+                    </p>
                   </div>
                 </div>
               )}

@@ -175,6 +175,20 @@ body[data-custom-background="true"]::before {
   will-change: filter;
 }
 
+body[data-custom-background="true"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: white;
+  opacity: var(--komari-custom-background-mask-opacity, 0);
+}
+
+.dark body[data-custom-background="true"]::after {
+  background-color: black;
+}
+
 body[data-card-blur="true"] :is(
   [data-slot="card"]:not(.bg-transparent),
   [data-card-blur-surface="true"],
