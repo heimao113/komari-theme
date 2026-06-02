@@ -4,7 +4,7 @@ import LanguageSwitch from "./Language";
 import LoginDialog from "./Login";
 import ThemeSwitcher from "./ThemeSwitcher";
 import DarkModeToggle from "./DarkModeToggle";
-import Link from "next/link";
+import SpaLink from "./SpaLink";
 import { Calculator } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { usePublicInfo } from "@/contexts/PublicInfoContext";
@@ -20,14 +20,14 @@ const NavBar = () => {
       <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
         {/* Logo and Title */}
         <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-all">
+          <SpaLink href="/" className="flex items-center gap-3 hover:opacity-80 transition-all">
             <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center shadow-md shadow-primary/20">
               <span className="text-primary-foreground font-bold text-xl">K</span>
             </div>
             <span className="text-xl md:text-2xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
               {publicInfo?.sitename}
             </span>
-          </Link>
+          </SpaLink>
         </div>
 
         {/* Actions */}

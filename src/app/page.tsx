@@ -1,8 +1,8 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import InstancePage from "@/components/instance/InstancePage";
 import DashboardContent from "@/components/DashboardContent";
+import { useSpaPathname } from "@/hooks/useSpaPathname";
 
 /**
  * Main page component with client-side routing.
@@ -10,7 +10,7 @@ import DashboardContent from "@/components/DashboardContent";
  * The routing decision happens before any conditional hooks are called.
  */
 export default function Page() {
-  const pathname = usePathname() || "/";
+  const pathname = useSpaPathname();
   
   // Client-side routing for SPA behavior with static export
   const parts = pathname.split("/").filter(Boolean);

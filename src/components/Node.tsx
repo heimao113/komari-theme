@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { TrendingUp, ArrowUp, ArrowDown, Activity } from "lucide-react";
 import type { TFunction } from "i18next";
@@ -20,6 +19,7 @@ import Flag from "./Flag";
 import PriceTags from "./PriceTags";
 import AdaptiveChart from "./AdaptiveChart";
 import MiniPingChartFloat from "./MiniPingChartFloat";
+import SpaLink from "./SpaLink";
 import Tips from "./ui/tips";
 
 // --- Helper Functions ---
@@ -313,11 +313,11 @@ const Node = ({ basic, live, online, pingStatsEnabled = false }: NodeProps) => {
             )}
             <div className="flex flex-col flex-1 min-w-0">
               <div className="flex flex-row min-w-0 items-center">
-                <Link href={`/instance/${basic.uuid}`} className="group-hover:text-primary transition-colors overflow-hidden flex-1">
+                <SpaLink href={`/instance/${basic.uuid}`} className="group-hover:text-primary transition-colors overflow-hidden flex-1">
                   <h3 className={`font-bold truncate pr-2 tracking-tight ${
                     themeConfig.cardLayout === 'detailed' ? 'text-lg' : 'text-base'
                   }`}>{basic.name}</h3>
-                </Link>
+                </SpaLink>
                 <div className="flex items-center gap-1 shrink-0">
                   {live?.message && <Tips color="#CE282E">{live.message}</Tips>}
                   <MiniPingChartFloat

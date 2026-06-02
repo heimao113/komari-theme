@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Flex } from "@/components/ui/flex";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
-import Link from "next/link";
 import { ChevronRight, ChevronUp, ChevronDown } from "lucide-react";
 import type { NodeBasicInfo } from "@/contexts/NodeListContext";
 import type { LiveData, Record } from "../types/LiveData";
@@ -28,6 +27,7 @@ import PriceTags from "./PriceTags";
 import Tips from "./ui/tips";
 import { DetailsGrid } from "./DetailsGrid";
 import MiniPingChart from "./MiniPingChart";
+import SpaLink from "./SpaLink";
 import { getOSImage } from "@/utils";
 import { cn } from "@/lib/utils";
 
@@ -316,7 +316,7 @@ const NodeTable: React.FC<NodeTableProps> = ({ nodes, liveData }) => {
                   <TableCell className="py-2 px-2">
                     <div className="flex items-center justify-start gap-2">
                       <Flag flag={node.region} />
-                      <Link
+                      <SpaLink
                         href={`/instance/${node.uuid}`}
                         className="hover:underline focus:outline-none"
                         onClick={(e) => e.stopPropagation()}
@@ -329,7 +329,7 @@ const NodeTable: React.FC<NodeTableProps> = ({ nodes, liveData }) => {
                             {isOnline ? formatUptime(nodeData.uptime, t) : 'Offline'}
                           </span>
                         </div>
-                      </Link>
+                      </SpaLink>
                     </div>
                   </TableCell>
 
