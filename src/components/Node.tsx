@@ -139,11 +139,13 @@ function PingHistoryStrip({
   value,
   points,
   metric,
+  isLoaded,
 }: {
   label: string;
   value: string;
   points: PingHistoryPoint[];
   metric: "latency" | "loss";
+  isLoaded: boolean;
 }) {
   return (
     <div className="min-w-0 rounded-md border border-border/45 bg-background/45 px-2 py-1.5">
@@ -152,7 +154,7 @@ function PingHistoryStrip({
         <span className="shrink-0 font-mono font-semibold text-foreground/80">{value}</span>
       </div>
       <div className="flex h-5 gap-0.5">
-        {points.map((point, index) => {
+        {points.filter(p => p.latency !== null || !isLoaded).map((point, index) => {
           const metricValue = point[metric];
           const tone =
             metricValue === null
@@ -162,7 +164,7 @@ function PingHistoryStrip({
                 : getLossTone(metricValue);
           const blockClassName = tone
             ? qualityToneStyles[tone].bar
-            : "";
+            : "bg-muted-foreground/18";
           const titleValue =
             metricValue === null
               ? "No data"
@@ -173,7 +175,7 @@ function PingHistoryStrip({
           return (
             <span
               key={`${point.time}-${index}`}
-              className={`flex-1 min-w-0 rounded-[2px] ${blockClassName}`}
+              className={`flex-1 min-w-[2px] rounded-[2px] ${blockClassName}`}
               title={`${formatHistoryTime(point.time)} ${titleValue}`}
             />
           );
@@ -214,12 +216,14 @@ function PingQualityBars({ pingStats, t }: { pingStats: PingStats; t: TFunction 
             value={latencyValue}
             points={historyPoints}
             metric="latency"
+            isLoaded={pingStats.isLoaded}
           />
           <PingHistoryStrip
             label={t("chart.lossRate", { defaultValue: "Loss" })}
             value={lossValue}
             points={historyPoints}
             metric="loss"
+            isLoaded={pingStats.isLoaded}
           />
         </div>
       )}
