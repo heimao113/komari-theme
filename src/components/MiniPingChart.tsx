@@ -172,7 +172,7 @@ const MiniPingChart = ({
     });
 
     return (
-      <div className="rounded-lg border bg-background p-2 shadow-sm">
+      <div className="pointer-events-auto max-h-[min(60dvh,22rem)] min-w-[12rem] max-w-[min(22rem,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-lg border bg-background p-2 shadow-sm touch-pan-y">
         <div className="text-xs text-muted-foreground mb-2">{formattedDate}</div>
         <div className="grid gap-1">
           {payload.map((entry: any, index: number) => {
@@ -185,12 +185,12 @@ const MiniPingChart = ({
 
             return (
               <div key={index} className="flex flex-col gap-0.5">
-                <div className="flex items-center gap-2">
+                <div className="flex min-w-0 items-center gap-2">
                   <div
-                    className="h-2 w-2 rounded-full"
+                    className="h-2 w-2 shrink-0 rounded-full"
                     style={{ backgroundColor: entry.color }}
                   />
-                  <span className="font-medium text-sm">{task.name}</span>
+                  <span className="min-w-0 truncate text-sm font-medium" title={task.name}>{task.name}</span>
                 </div>
                 <div className="ml-4 text-xs">
                   <div>{Math.round(entry.value)} ms</div>
@@ -214,7 +214,7 @@ const MiniPingChart = ({
   return (
     <Card
       style={{ width, maxWidth: "100%", height: 'auto', minHeight: height }}
-      className="flex w-full min-w-0 max-w-full flex-col gap-2 overflow-hidden p-3"
+      className="flex w-full min-w-0 max-w-full flex-col gap-2 overflow-visible p-3"
     >
       {loading && (
         <div
@@ -241,7 +241,7 @@ const MiniPingChart = ({
         !error && (
           <ChartContainer
             config={chartConfig}
-            className="w-full min-w-0 max-w-full overflow-hidden"
+            className="w-full min-w-0 max-w-full overflow-visible"
             style={{ height: typeof height === 'number' ? `${height - 80}px` : '220px' }}
           >
             <LineChart
@@ -271,6 +271,8 @@ const MiniPingChart = ({
               <ChartTooltip
                 cursor={false}
                 content={<CustomTooltip />}
+                allowEscapeViewBox={{ x: true, y: true }}
+                wrapperStyle={{ pointerEvents: "auto", zIndex: 20 }}
               />
               <ChartLegend
                 onClick={handleLegendClick}
