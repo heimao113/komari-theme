@@ -2,6 +2,7 @@
 
 import React from "react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useAnimatedNumber } from "@/hooks/useAnimatedNumber";
 import CircleChart from "./CircleChart";
 import { Progress } from "@/components/ui/progress";
 
@@ -17,7 +18,9 @@ interface AdaptiveChartProps {
 export default function AdaptiveChart({ value, label, subLabel, color, compact = false, animate = false }: AdaptiveChartProps) {
   const { themeConfig } = useTheme();
   const chartValue = Math.min(Math.max(value, 0), 100);
-  const visualValue = chartValue;
+  const shouldAnimateVisual = animate && themeConfig.graphDesign !== 'minimal';
+  const animatedValue = useAnimatedNumber(chartValue, { enabled: shouldAnimateVisual });
+  const textValue = Math.min(Math.max(animatedValue, 0), 100);
 
   // Get theme colors - must use full class names for Tailwind JIT
   const getColorClass = (val: number) => {
@@ -66,7 +69,7 @@ export default function AdaptiveChart({ value, label, subLabel, color, compact =
       return (
         <div className="flex items-center justify-center">
           <div className={`text-sm font-bold ${getColorClass(chartValue)}`}>
-            {Math.round(chartValue)}%
+            {Math.round(textValue)}%
           </div>
         </div>
       );
@@ -74,7 +77,7 @@ export default function AdaptiveChart({ value, label, subLabel, color, compact =
     return (
       <div className="flex flex-col items-center justify-center p-2 min-w-[90px]">
         <div className={`text-2xl font-bold ${getColorClass(chartValue)}`}>
-          {Math.round(chartValue)}%
+          {Math.round(textValue)}%
         </div>
         <div className="text-center mt-1">
           <div className="text-xs font-semibold text-foreground/90">{label}</div>
@@ -92,9 +95,9 @@ export default function AdaptiveChart({ value, label, subLabel, color, compact =
       return (
         <div className="flex items-center justify-center">
           <div className="w-[50px] space-y-1">
-            <Progress value={visualValue} className="h-1.5" />
+            <Progress value={chartValue} className="h-1.5" />
             <div className={`text-[10px] font-bold text-center ${getColorClass(chartValue)}`}>
-              {Math.round(chartValue)}%
+              {Math.round(textValue)}%
             </div>
           </div>
         </div>
@@ -109,9 +112,9 @@ export default function AdaptiveChart({ value, label, subLabel, color, compact =
           )}
         </div>
         <div className="w-full max-w-[80px] space-y-1">
-          <Progress value={visualValue} className="h-2" />
+          <Progress value={chartValue} className="h-2" />
           <div className={`text-sm font-bold text-center ${getColorClass(chartValue)}`}>
-            {Math.round(chartValue)}%
+            {Math.round(textValue)}%
           </div>
         </div>
       </div>
@@ -126,14 +129,14 @@ export default function AdaptiveChart({ value, label, subLabel, color, compact =
           <div className="h-[40px] w-[30px] flex flex-col justify-end items-center">
             <div className="w-full flex flex-col justify-end items-center h-full relative">
               <div
-                className={`w-full rounded-t-lg transition-transform duration-500 origin-bottom ${getBarColorClass(visualValue)}`}
-                style={{ transform: `scaleY(${visualValue / 100})`, height: '100%' }}
+                className={`w-full rounded-t-lg transition-transform duration-500 origin-bottom ${getBarColorClass(chartValue)}`}
+                style={{ transform: `scaleY(${chartValue / 100})`, height: '100%' }}
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className={`text-[9px] font-bold drop-shadow-lg ${
                   chartValue >= 30 ? 'text-white' : 'text-foreground'
                 }`}>
-                  {Math.round(chartValue)}%
+                  {Math.round(textValue)}%
                 </span>
               </div>
             </div>
@@ -147,8 +150,8 @@ export default function AdaptiveChart({ value, label, subLabel, color, compact =
         <div className="h-[90px] w-[60px] flex flex-col justify-end items-center">
           <div className="w-full flex flex-col justify-end items-center h-full relative">
             <div
-              className={`w-full rounded-t-lg transition-transform duration-500 origin-bottom ${getBarColorClass(visualValue)}`}
-              style={{ transform: `scaleY(${visualValue / 100})`, height: '100%' }}
+              className={`w-full rounded-t-lg transition-transform duration-500 origin-bottom ${getBarColorClass(chartValue)}`}
+              style={{ transform: `scaleY(${chartValue / 100})`, height: '100%' }}
             />
             <div className="absolute inset-0 flex items-center justify-center">
               <span className={`text-xs font-bold drop-shadow-lg ${
@@ -157,7 +160,7 @@ export default function AdaptiveChart({ value, label, subLabel, color, compact =
                 chartValue >= 30 ? 'text-white' :
                 'text-foreground'
               }`}>
-                {Math.round(chartValue)}%
+                {Math.round(textValue)}%
               </span>
             </div>
           </div>
@@ -176,12 +179,12 @@ export default function AdaptiveChart({ value, label, subLabel, color, compact =
   // Default: Circle Design
   return (
     <CircleChart
-      value={visualValue}
+      value={chartValue}
       label={label}
       subLabel={subLabel}
       color={color}
       compact={compact}
-      displayValue={chartValue}
+      displayValue={textValue}
       animationDuration={animate ? 800 : 0}
     />
   );
