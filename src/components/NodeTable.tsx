@@ -30,6 +30,7 @@ import MiniPingChart from "./MiniPingChart";
 import SpaLink from "./SpaLink";
 import { getOSImage } from "@/utils";
 import { cn } from "@/lib/utils";
+import { useTheme } from "@/contexts/ThemeContext";
 
 interface NodeTableProps {
   nodes: NodeBasicInfo[];
@@ -46,6 +47,7 @@ interface SortState {
 
 const NodeTable: React.FC<NodeTableProps> = ({ nodes, liveData }) => {
   const [t] = useTranslation();
+  const { themeConfig } = useTheme();
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [sortState, setSortState] = useState<SortState>({ field: null, order: 'default' });
 
@@ -370,24 +372,30 @@ const NodeTable: React.FC<NodeTableProps> = ({ nodes, liveData }) => {
                   </TableCell>
 
                   <TableCell className="py-2 px-2">
-                    <div className="flex justify-center">
+                    <div className="flex flex-col items-center justify-center gap-1">
                       <AdaptiveChart
                         value={memoryUsagePercent}
                         label={t("nodeCard.ram")}
-                        subLabel={`${formatBytes(nodeData.ram.used)} / ${formatBytes(node.mem_total)}`}
+                        subLabel={themeConfig.showRamDiskTotal ? `${formatBytes(nodeData.ram.used)} / ${formatBytes(node.mem_total)}` : formatBytes(nodeData.ram.used)}
                         compact={true}
                       />
+                      <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                        {themeConfig.showRamDiskTotal ? `${formatBytes(nodeData.ram.used)} / ${formatBytes(node.mem_total)}` : formatBytes(nodeData.ram.used)}
+                      </span>
                     </div>
                   </TableCell>
 
                   <TableCell className="py-2 px-2">
-                    <div className="flex justify-center">
+                    <div className="flex flex-col items-center justify-center gap-1">
                       <AdaptiveChart
                         value={diskUsagePercent}
                         label={t("nodeCard.disk")}
-                        subLabel={`${formatBytes(nodeData.disk.used)} / ${formatBytes(node.disk_total)}`}
+                        subLabel={themeConfig.showRamDiskTotal ? `${formatBytes(nodeData.disk.used)} / ${formatBytes(node.disk_total)}` : formatBytes(nodeData.disk.used)}
                         compact={true}
                       />
+                      <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                        {themeConfig.showRamDiskTotal ? `${formatBytes(nodeData.disk.used)} / ${formatBytes(node.disk_total)}` : formatBytes(nodeData.disk.used)}
+                      </span>
                     </div>
                   </TableCell>
                   {showPriceColumn &&

@@ -36,6 +36,7 @@ const ThemeSwitcher = () => {
     setCardDesign,
     setStatusDesign,
     setGraphDesign,
+    setShowRamDiskTotal,
     setBackgroundImageUrl,
     setBackgroundBlurEnabled,
     setBackgroundBlurType,

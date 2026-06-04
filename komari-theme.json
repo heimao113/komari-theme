@@ -2,7 +2,7 @@
     "name": "Komari Next",
     "short": "next",
     "description": "NextJS theme for Komari Monitor",
-    "version": "1.4.12",
+    "version": "1.4.13",
     "author": "tonyliuzj",
     "url": "https://github.com/tonyliuzj/komari-next",
     "preview": "preview.png",
@@ -298,6 +298,15 @@
                 "options": "circle,progress,bar,minimal"
             },
             {
+                "key": "showRamDiskTotal",
+                "type": "switch",
+                "name": {
+                    "zh-CN": "显示总内存和磁盘",
+                    "en-US": "Show Total RAM and Disk"
+                },
+                "default": false
+            },
+            {
                 "key": "nodeViewMode",
                 "type": "select",
                 "name": {
@@ -531,6 +540,15 @@
                 },
                 "default": "circle",
                 "options": "circle,progress,bar,minimal"
+            },
+            {
+                "key": "showRamDiskTotal",
+                "type": "switch",
+                "name": {
+                    "zh-CN": "显示总内存和磁盘",
+                    "en-US": "Show Total RAM and Disk"
+                },
+                "default": false
             },
             {
                 "key": "nodeViewMode",
@@ -772,6 +790,15 @@
                 "options": "circle,progress,bar,minimal"
             },
             {
+                "key": "showRamDiskTotal",
+                "type": "switch",
+                "name": {
+                    "zh-CN": "显示总内存和磁盘",
+                    "en-US": "Show Total RAM and Disk"
+                },
+                "default": false
+            },
+            {
                 "key": "nodeViewMode",
                 "type": "select",
                 "name": {
@@ -1009,6 +1036,15 @@
                 },
                 "default": "circle",
                 "options": "circle,progress,bar,minimal"
+            },
+            {
+                "key": "showRamDiskTotal",
+                "type": "switch",
+                "name": {
+                    "zh-CN": "显示总内存和磁盘",
+                    "en-US": "Show Total RAM and Disk"
+                },
+                "default": false
             },
             {
                 "key": "nodeViewMode",

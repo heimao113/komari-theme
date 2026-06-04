@@ -386,13 +386,13 @@ const Node = ({ basic, live, online, pingStatsEnabled = false }: NodeProps) => {
           <AdaptiveChart
             value={memoryUsagePercent}
             label="RAM"
-            subLabel={formatBytes(liveData.ram.used)}
+            subLabel={themeConfig.showRamDiskTotal ? `${formatBytes(liveData.ram.used)} / ${formatBytes(basic.mem_total)}` : formatBytes(liveData.ram.used)}
             animate
           />
           <AdaptiveChart
             value={diskUsagePercent}
             label="Disk"
-            subLabel={formatBytes(liveData.disk.used)}
+            subLabel={themeConfig.showRamDiskTotal ? `${formatBytes(liveData.disk.used)} / ${formatBytes(basic.disk_total)}` : formatBytes(liveData.disk.used)}
             animate
           />
         </div>

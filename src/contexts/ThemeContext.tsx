@@ -30,6 +30,7 @@ export interface ThemeConfig {
   cardDesign: CardDesign;
   statusDesign: StatusDesign;
   graphDesign: GraphDesign;
+  showRamDiskTotal: boolean;
   backgroundImageUrl?: string;
   backgroundBlurEnabled: boolean;
   backgroundBlurType: BackgroundBlurType;
@@ -71,6 +72,7 @@ interface ThemeContextType {
   setCardDesign: (design: CardDesign) => void;
   setStatusDesign: (design: StatusDesign) => void;
   setGraphDesign: (design: GraphDesign) => void;
+  setShowRamDiskTotal: (show: boolean) => void;
   setBackgroundImageUrl: (url: string) => void;
   setBackgroundBlurEnabled: (enabled: boolean) => void;
   setBackgroundBlurType: (type: BackgroundBlurType) => void;
@@ -138,6 +140,7 @@ const DEFAULT_THEME_CONFIG: ThemeConfig = {
   cardDesign: "default",
   statusDesign: "default",
   graphDesign: "circle",
+  showRamDiskTotal: false,
   backgroundImageUrl: "",
   backgroundBlurEnabled: false,
   backgroundBlurType: "soft",
@@ -470,6 +473,7 @@ function normalizeThemeConfigOverrides(input: unknown): Partial<ThemeConfig> {
   const cardDesign = pickEnum(input.cardDesign, CARD_DESIGNS);
   const statusDesign = pickEnum(input.statusDesign, STATUS_DESIGNS);
   const graphDesign = pickEnum(input.graphDesign, GRAPH_DESIGNS);
+  const showRamDiskTotal = pickBoolean((input as any).showRamDiskTotal);
   const backgroundImageUrl = pickString(input.backgroundImageUrl);
   const backgroundBlurEnabled = pickBoolean(input.backgroundBlurEnabled);
   const backgroundBlurType = pickBlurType(input.backgroundBlurType);
@@ -485,6 +489,7 @@ function normalizeThemeConfigOverrides(input: unknown): Partial<ThemeConfig> {
   if (cardDesign) result.cardDesign = cardDesign;
   if (statusDesign) result.statusDesign = statusDesign;
   if (graphDesign) result.graphDesign = graphDesign;
+  if (showRamDiskTotal !== undefined) result.showRamDiskTotal = showRamDiskTotal;
   if (backgroundImageUrl !== undefined) result.backgroundImageUrl = backgroundImageUrl;
   if (backgroundBlurEnabled !== undefined) result.backgroundBlurEnabled = backgroundBlurEnabled;
   if (backgroundBlurType) result.backgroundBlurType = backgroundBlurType;
@@ -1132,6 +1137,10 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     (design: GraphDesign) => setLocalThemePatch({ graphDesign: design }),
     [setLocalThemePatch]
   );
+  const setShowRamDiskTotal = useCallback(
+    (show: boolean) => setLocalThemePatch({ showRamDiskTotal: show }),
+    [setLocalThemePatch]
+  );
   const setBackgroundImageUrl = useCallback(
     (url: string) => setLocalThemePatch({ backgroundImageUrl: url }),
     [setLocalThemePatch]
@@ -1193,6 +1202,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       setCardDesign,
       setStatusDesign,
       setGraphDesign,
+      setShowRamDiskTotal,
       setBackgroundImageUrl,
       setBackgroundBlurEnabled,
       setBackgroundBlurType,
@@ -1229,6 +1239,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       setCardTransparentIntensity,
       setColorTheme,
       setGraphDesign,
+      setShowRamDiskTotal,
       setLanguageValue,
       setNodeViewModeValue,
       setStatusCardVisibility,
