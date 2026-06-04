@@ -644,6 +644,7 @@ function mergeManagedSettings(
       "cardDesign",
       "statusDesign",
       "graphDesign",
+      "showRamDiskTotal",
       "backgroundImageUrl",
       "backgroundBlurEnabled",
       "backgroundBlurType",
