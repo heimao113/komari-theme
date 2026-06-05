@@ -17,6 +17,7 @@ import { CurrentTimeCard } from "@/components/CurrentTimeCard";
 import { Callouts } from "@/components/DashboardCallouts";
 import { NodeMapView } from "@/components/NodeMapView";
 import { useStatusCardsVisibility } from "@/hooks/useStatusCardsVisibility";
+import { useMounted } from "@/hooks/useMounted";
 
 // Intelligent speed formatting function
 const formatSpeed = (bytes: number): string => {
@@ -116,6 +117,7 @@ const renderSpeedStatusValue = ({
 );
 
 export default function DashboardContent() {
+  const mounted = useMounted();
   const [t] = useTranslation();
   const { live_data } = useLiveData();
   const { publicInfo } = usePublicInfo();
@@ -290,7 +292,7 @@ export default function DashboardContent() {
             ))}
         </div>
 
-        {statusCardsVisibility.mapView && (
+        {mounted && statusCardsVisibility.mapView && (
           <NodeMapView
             nodes={nodeList ?? []}
             liveData={live_data?.data ?? { online: [], data: {} }}
