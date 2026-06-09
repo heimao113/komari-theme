@@ -248,9 +248,15 @@ const Node = ({ basic, live, online, pingStatsEnabled = false }: NodeProps) => {
   const defaultLive = {
     cpu: { usage: 0 },
     ram: { used: 0 },
+    swap: { used: 0 },
+    load: { load1: 0, load5: 0, load15: 0 },
     disk: { used: 0 },
     network: { up: 0, down: 0, totalUp: 0, totalDown: 0 },
+    connections: { tcp: 0, udp: 0 },
     uptime: 0,
+    process: 0,
+    message: "",
+    updated_at: "",
   } as Record;
 
   const liveData = live || defaultLive;
@@ -416,7 +422,10 @@ const Node = ({ basic, live, online, pingStatsEnabled = false }: NodeProps) => {
             const hasPriceInfo = basic.price !== undefined || basic.expired_at;
 
             // CPU 负载小字：1min / 5min / 15min 平均负载
-            const cpuLoadSub = `${liveData.load.load1.toFixed(2)}, ${liveData.load.load5.toFixed(2)}, ${liveData.load.load15.toFixed(2)}`;
+            const load1 = liveData.load?.load1 ?? 0;
+            const load5 = liveData.load?.load5 ?? 0;
+            const load15 = liveData.load?.load15 ?? 0;
+            const cpuLoadSub = `${load1.toFixed(2)}, ${load5.toFixed(2)}, ${load15.toFixed(2)}`;
 
             return (
               <div className="space-y-2 text-sm">
