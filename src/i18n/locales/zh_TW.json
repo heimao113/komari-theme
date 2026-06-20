@@ -663,6 +663,8 @@
     "cardExtraBlurIntensity": "額外模糊強度",
     "statusDesign": "狀態設計",
     "graphDesign": "圖表設計",
+    "showRamDiskTotal": "顯示總記憶體/磁碟",
+    "showRamDiskTotalDescription": "顯示記憶體和磁碟的已用 / 總量。",
     "backgroundImage": "背景圖片",
     "backgroundImagePlaceholder": "輸入圖片 URL",
     "backgroundBlur": "背景模糊",

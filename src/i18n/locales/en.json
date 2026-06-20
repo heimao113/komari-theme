@@ -663,6 +663,8 @@
     "cardExtraBlurIntensity": "Extra Blur Intensity",
     "statusDesign": "Status Design",
     "graphDesign": "Graph Design",
+    "showRamDiskTotal": "Show Total RAM/Disk",
+    "showRamDiskTotalDescription": "Display used / total for RAM and Disk.",
     "backgroundImage": "Background Image",
     "backgroundImagePlaceholder": "Enter image URL",
     "backgroundBlur": "Background Blur",

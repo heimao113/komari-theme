@@ -893,6 +893,8 @@
         "label": "进度条"
       }
     },
+    "showRamDiskTotal": "显示总内存/磁盘",
+    "showRamDiskTotalDescription": "显示内存和磁盘的已用 / 总量。",
     "statusDesign": "状态设计",
     "statusDesigns": {
       "default": {
